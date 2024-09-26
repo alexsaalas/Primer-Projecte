@@ -7,6 +7,8 @@ public class NauJugador : MonoBehaviour
     private float _vel;
     private Vector2 minPantalla;
     private Vector2 maxPantalla;
+    
+    [SerializeField] private GameObject prefabProjectil;
 
     // Start is called before the first frame update
     void Start()
@@ -25,22 +27,41 @@ public class NauJugador : MonoBehaviour
         minPantalla.y += midaMeitatImatgeY;
         maxPantalla.y -= midaMeitatImatgeY;
     }
-
     void Update()
+    {
+        MovimentNau();
+        DispararProjectil();
+    }
+
+    private void MovimentNau()
     {
         float direccioIndicadaX = Input.GetAxisRaw("Horizontal");
         float direccioIndicadaY = Input.GetAxisRaw("Vertical");
 
-        //Debug.Log("X: " + direccioIndicadaX + " - Y: " + direccioIndicadaY);
+        // Debug.Log("X: " + direccioIndicadaX + " - Y: " + direccioIndicadaY);
 
         Vector2 direccioIndicada = new Vector2(direccioIndicadaX, direccioIndicadaY).normalized;
         Vector2 novaPos = transform.position;
-        novaPos = novaPos + direccioIndicada * _vel * Time.deltaTime;
 
+        // Mueve el objeto en la dirección indicada por el usuario
+        novaPos += direccioIndicada * _vel * Time.deltaTime;
+
+        // Limita la posición dentro de los límites de la pantalla
         novaPos.x = Mathf.Clamp(novaPos.x, minPantalla.x, maxPantalla.x);
         novaPos.y = Mathf.Clamp(novaPos.y, minPantalla.y, maxPantalla.y);
-        
 
+        // Actualiza la posición del objeto
         transform.position = novaPos;
     }
+    private void DispararProjectil()
+    {
+        if (Input.GetKey("space"))
+        {
+            GameObject projectil = Instantiate(prefabProjectil);
+            projectil.transform.position = transform.position;
+        }
+    }
 }
+
+
+
