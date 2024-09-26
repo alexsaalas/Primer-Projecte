@@ -14,6 +14,16 @@ public class NauJugador : MonoBehaviour
         _vel = 8;
         minPantalla = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
         maxPantalla = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
+
+        float midaMeitatImatgeX = GetComponent<SpriteRenderer>().sprite.bounds.size.x * transform.localScale.x / 2;
+        float midaMeitatImatgeY = GetComponent<SpriteRenderer>().sprite.bounds.size.y * transform.localScale.y / 2;
+        //* minPantalla.x = minPantalla.x + 0.75f;
+        //* És sinomin a linea arriba minPantalla.x += 0.75f
+
+        minPantalla.x += midaMeitatImatgeX;
+        maxPantalla.x -= midaMeitatImatgeX;
+        minPantalla.y += midaMeitatImatgeY;
+        maxPantalla.y -= midaMeitatImatgeY;
     }
 
     void Update()
@@ -21,7 +31,7 @@ public class NauJugador : MonoBehaviour
         float direccioIndicadaX = Input.GetAxisRaw("Horizontal");
         float direccioIndicadaY = Input.GetAxisRaw("Vertical");
 
-        Debug.Log("X: " + direccioIndicadaX + " - Y: " + direccioIndicadaY);
+        //Debug.Log("X: " + direccioIndicadaX + " - Y: " + direccioIndicadaY);
 
         Vector2 direccioIndicada = new Vector2(direccioIndicadaX, direccioIndicadaY).normalized;
         Vector2 novaPos = transform.position;
@@ -29,9 +39,7 @@ public class NauJugador : MonoBehaviour
 
         novaPos.x = Mathf.Clamp(novaPos.x, minPantalla.x, maxPantalla.x);
         novaPos.y = Mathf.Clamp(novaPos.y, minPantalla.y, maxPantalla.y);
-        minPantalla.x = minPantalla.x + 0.75f;
-        maxPantalla.x = maxPantalla.x - 0.75f;
-        minPantalla.y = minPantalla.y + 0.75f;
+        
 
         transform.position = novaPos;
     }
