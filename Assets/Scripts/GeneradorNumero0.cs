@@ -5,12 +5,23 @@ using UnityEngine;
 public class GeneradorNumero0 : MonoBehaviour
 {
     [SerializeField] private GameObject prefabNumero; 
-    // Start is called before the first frame update
+
+    private Vector2 minPantalla, maxPantalla; 
+     // Start is called before the first frame update
     void Start()
     {
-        
-    }
+        minPantalla = Camera.main.ViewportToWorldPoint(new Vector2(0,0));
+        maxPantalla = Camera.main.ViewportToWorldPoint(new Vector2(1,1));
+        //* Salir mas de 1 random
+        InvokeRepeating("GenerarNumero",1f,2f);
 
+    }
+    private void  GenerarNumero()
+    {
+        GameObject numero = Instantiate(prefabNumero);    
+        numero.transform.position = new Vector2
+            (Random.Range(minPantalla.x, maxPantalla.x), maxPantalla.y);
+    }
     // Update is called once per frame
     void Update()
     {
